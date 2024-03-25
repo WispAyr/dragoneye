@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Feeds</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsmpeg@0.4"></script>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            grid-gap: 10px;
+            margin: 20px;
+        }
+        .grid-item {
+            cursor: pointer;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+        #fullScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+        }
+        #fullScreen canvas {
+            width: 90%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="grid" class="grid">
+    <!-- Cameras will be inserted here -->
+</div>
+
+<div id="fullScreen" class="grid">
+    <!-- Full screen view will be toggled here -->
+</div>
+
+<script>
+    // Define your camera feeds
+    const cameraFeeds = [
+        {id: 'camera1', url: 'ws://localhost:9999/'},
+        {id: 'camera2', url: 'ws://localhost:10000/'},
+        // Add more cameras as needed
+    ];
+
+    const grid = document.getElementById('grid');
+    const fullScreen = document.getElementById('fullScreen');
+
+    cameraFeeds.forEach(feed => {
+        const canvas = document.createElement('canvas');
+        canvas.id = feed.id;
+        grid.appendChild(canvas);
+        new JSMpeg.Player(feed.url, {canvas: canvas});
+
+        // Click event to toggle full screen
+        canvas.addEventListener('click', () => {
+            fullScreen.innerHTML = ''; // Clear full screen container
+            const cloneCanvas = canvas.cloneNode();
+            fullScreen.appendChild(cloneCanvas);
+            new JSMpeg.Player(feed.url, {canvas: cloneCanvas}); // Re-initialize player for full screen
+            fullScreen.style.display = 'flex';
+        });
+    });
+
+    // Click event to close full screen
+    fullScreen.addEventListener('click', () => {
+        fullScreen.style.display = 'none';
+        fullScreen.innerHTML = ''; // Clear full screen container
+    });
+</script>
+
+</body>
+</html>
