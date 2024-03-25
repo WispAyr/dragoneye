@@ -1,22 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>RTSP Stream via WebSocket</title>
-    <!-- Update the src attribute to point to your local copy of JSMpeg -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragoneye Camera Server</title>
     <script src="/js/jsmpeg.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .camera {
+            margin: 10px;
+            background-color: #222;
+            border: 2px solid #555;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .camera canvas {
+            display: block; /* Removes bottom margin/gap */
+            width: 100%; /* Responsive width */
+            max-width: 640px; /* Maximum size */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .controls {
+            text-align: center;
+            padding: 5px;
+        }
+        .control-btn {
+            background-color: #444;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .control-btn:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-    <!-- Your canvas elements for the video display -->
-    <canvas id="camera1"></canvas>
-    <!-- More canvas elements for other cameras as needed -->
-
     <script>
-        // Ensure this code runs after the JSMpeg library has loaded
+        // Placeholder for actual PTZ function implementation
+        function controlPTZ(cameraId, action) {
+            console.log(`Controlling PTZ for Camera ${cameraId}: ${action}`);
+            // Here you would send a command to your server or camera for PTZ control
+        }
+    </script>
+
+    <!-- Dynamically generated camera views and controls -->
+    <script>
         for (let i = 1; i <= 8; i++) {
-            let canvasId = 'camera' + i;
-            let canvas = document.getElementById(canvasId);
+            let cameraContainer = document.createElement('div');
+            cameraContainer.className = 'camera';
+            cameraContainer.innerHTML = `
+                <canvas id="camera${i}"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'left')">Left</button>
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'up')">Up</button>
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'right')">Right</button>
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'down')">Down</button>
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'zoomIn')">Zoom In</button>
+                    <button class="control-btn" onclick="controlPTZ(${i}, 'zoomOut')">Zoom Out</button>
+                </div>
+            `;
+            document.body.appendChild(cameraContainer);
+
+            let canvas = document.getElementById(`camera${i}`);
             let wsUrl = 'ws://' + window.location.hostname + ':4343/camera' + i;
-            let player = new JSMpeg.Player(wsUrl, { canvas: canvas });
+            new JSMpeg.Player(wsUrl, { canvas: canvas });
         }
     </script>
 </body>
