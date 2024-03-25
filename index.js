@@ -1,17 +1,17 @@
 const Stream = require('node-rtsp-stream');
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 4343;
 
 const cameraStreams = [
     {
       name: 'Camera 1',
-      url: 'rtsp://b03773d78e34.entrypoint.cloud.wowza.com:1935/app-4065XT4Z/80c76e59_stream1',
+      url: 'rtsp://rtspstream:32deec874b0b516cd6c5ed2bbba3a3ba@zephyr.rtsp.stream/movie',
       wsPort: 9999
     },
     {
       name: 'Camera 2',
-      url: 'rtsp://b03773d78e34.entrypoint.cloud.wowza.com:1935/app-4065XT4Z/80c76e59_stream1',
+      url: 'rtsp://rtspstream:32deec874b0b516cd6c5ed2bbba3a3ba@zephyr.rtsp.stream/movie',
       wsPort: 10000
     }
     // Add more cameras as needed
