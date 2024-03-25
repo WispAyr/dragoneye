@@ -2,20 +2,21 @@
 <html>
 <head>
     <title>RTSP Stream via WebSocket</title>
-    <!-- Ensure JSMpeg is included first -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.4/jsmpeg.min.js"></script>
+    <!-- Update the src attribute to point to your local copy of JSMpeg -->
+    <script src="/js/jsmpeg.min.js"></script>
 </head>
 <body>
-    <!-- Your canvas elements -->
+    <!-- Your canvas elements for the video display -->
     <canvas id="camera1"></canvas>
-    <!-- More canvas elements for other cameras -->
+    <!-- More canvas elements for other cameras as needed -->
 
     <script>
-        // Your JavaScript code that uses JSMpeg goes here
+        // Ensure this code runs after the JSMpeg library has loaded
         for (let i = 1; i <= 8; i++) {
-            let canvas = document.getElementById('camera' + i);
-            let ws = new WebSocket('ws://' + window.location.hostname + ':4343/camera' + i);
-            new JSMpeg.Player(ws, {canvas: canvas});
+            let canvasId = 'camera' + i;
+            let canvas = document.getElementById(canvasId);
+            let wsUrl = 'ws://' + window.location.hostname + ':4343/camera' + i;
+            let player = new JSMpeg.Player(wsUrl, { canvas: canvas });
         }
     </script>
 </body>
