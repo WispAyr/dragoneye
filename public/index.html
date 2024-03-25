@@ -8,29 +8,42 @@
     <style>
         body {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Minimum height of body to full viewport height */
+            margin: 0; /* Remove default margin */
             background-color: #333;
             color: #fff;
             font-family: Arial, sans-serif;
         }
+        
         .camera {
-            margin: 10px;
+            width: 100vw; /* Camera width to full viewport width */
+            height: 100vh; /* Camera height to full viewport height */
+            margin: 0; /* Remove margin */
             background-color: #222;
-            border: 2px solid #555;
-            border-radius: 5px;
-            overflow: hidden;
+            border: none; /* Remove border */
+            display: flex;
+            flex-direction: column; /* Stack children (canvas and controls) vertically */
+            justify-content: center; /* Center children vertically */
+            align-items: center; /* Center children horizontally */
         }
+        
         .camera canvas {
-            display: block; /* Removes bottom margin/gap */
-            width: 100%; /* Responsive width */
-            max-width: 640px; /* Maximum size */
-            height: auto; /* Maintain aspect ratio */
+            max-width: 100%; /* Responsive width */
+            max-height: 90vh; /* Limit the height to allow space for controls */
+            object-fit: contain; /* Ensure aspect ratio is maintained without stretching */
         }
+        
         .controls {
+            width: 100%; /* Controls width to full container width */
             text-align: center;
             padding: 5px;
+            background-color: #222; /* Match the background of the camera container */
         }
+        
+        /* Keep other styles unchanged */
+        
         .control-btn {
             background-color: #444;
             border: none;
