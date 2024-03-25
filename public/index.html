@@ -1,38 +1,21 @@
-<!-- Filename: public/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Feeds</title>
+    <title>RTSP Stream via WebSocket</title>
     <script src="https://cdn.jsdelivr.net/npm/jsmpeg@0.4"></script>
-    <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Adjust based on the number of columns you want */
-            grid-gap: 10px;
-            padding: 20px;
-        }
-        canvas {
-            width: 100%;
-            height: auto; /* Adjust height as needed */
-        }
-    </style>
 </head>
 <body>
-
-<div class="grid">
+    <!-- Create eight canvas elements for eight cameras -->
     <canvas id="camera1"></canvas>
     <canvas id="camera2"></canvas>
-    <!-- Add more canvases as needed -->
-</div>
-
-<script>
-    // Initialize the camera feeds
-    new JSMpeg.Player('ws://localhost:9999/', {canvas: document.getElementById('camera1')});
-    new JSMpeg.Player('ws://localhost:10000/', {canvas: document.getElementById('camera2')});
-    // Add more JSMpeg.Player instances as needed for additional cameras
-</script>
-
+    <!-- Repeat for all cameras... -->
+    <script>
+        // Connect each canvas to its WebSocket endpoint
+        for (let i = 1; i <= 8; i++) {
+            let canvas = document.getElementById('camera' + i);
+            let ws = new WebSocket('ws://' + window.location.hostname + ':4343/camera' + i);
+            new JSMpeg.Player(ws, {canvas: canvas});
+        }
+    </script>
 </body>
 </html>
