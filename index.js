@@ -32,13 +32,14 @@ wss.on('connection', (ws, request) => {
   const ffmpeg = spawn('ffmpeg', [
     '-rtsp_transport', 'tcp',
     '-fflags', '+genpts+discardcorrupt',
-    '-i', 'rtsp://rtspstream:3c2456b30e437cd7c1349c13309894e1@zephyr.rtsp.stream/pattern',
+    '-i', 'rtsp://admin:123456@192.168.123.180:554/stream1', // your RTSP URL
     '-f', 'mpegts',
     '-codec:v', 'mpeg1video',
-    '-b:v', '800k',
-    '-r', '30',
+    '-b:v', '10240k', // set to the same as your camera's bitrate for best quality
+    '-r', '25', // set to the same frame rate as your camera
     'pipe:1'
   ]);
+  
 
   ffmpeg.stdout.on('data', data => {
     ws.send(data, error => {
